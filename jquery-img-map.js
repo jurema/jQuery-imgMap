@@ -1,9 +1,10 @@
 (function($) {
 
-  $.fn.imgMap = function(element, options) {
+  $.fn.imgMap = function(element, options, onLoad) {
 
-    if (typeof options === 'undefined') {
-      var options = element || {};
+    if (typeof options === 'undefined' || typeof options === 'boolean') {
+      onLoad = options;
+      options = element || {};
       var self = $(this);
     }
     else {
@@ -27,14 +28,21 @@
     var data = ($.type(options.data) === 'object') ? [options.data] : options.data;
 
     var el = document.createElement('div'),
-    div = $(el).css({
+    div = $(el);
+    
+    if (onLoad) {
+      self.find('img').load(function() {
+        self.find('._tags').fadeTo(400, options.opacity);
+      });
+    }
+
+    div.prop('class', '_tags').css({
       'z-index' : 1,
       top : '0px',
       left : '0px',
       position : 'absolute',
-      display : options.display,
       border : options.borderWidth + ' ' + options.borderType + ' ' + options.borderColor,
-      opacity : options.opacity
+      opacity : onLoad ? 0 : options.opacity
     });
 
     self.css('position', 'relative');
@@ -68,7 +76,6 @@
 
       self.append(tag);
     });
-
   };
 
 })(jQuery);

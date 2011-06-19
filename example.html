@@ -15,7 +15,7 @@
       <img src="http://images.instagram.com/media/2011/06/17/9508b16b94c84083b9cac1fcc528c95c_7.jpg" alt="Teatro Municipal - SP" title="Teatro Municipal - SP" />
     </div>
     <script>
-      (function() {
+      $(document).ready(function() {
         $('#container').imgMap({
           borderWidth : '3px',
           borderColor : 'yellow',
@@ -30,8 +30,8 @@
             start_y : 235,
             end_y : 280
           }]
-        });
-      })();
+        }, true); // true for showing the tags after the image is loaded
+      });
     </script>
   </body>
 </html>
