@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="charset" content="utf-8" />
+    <title>jQuery Image Mapping example</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <style>
+      body, img, div{ margin:0px; padding:0px }
+    </style>
+    <script src="./jquery-img-map.js"></script>
+  </head>
+  <body>
+    <div id="container">
+      <img src="http://images.instagram.com/media/2011/06/17/9508b16b94c84083b9cac1fcc528c95c_7.jpg" alt="Teatro Municipal - SP" title="Teatro Municipal - SP" />
+    </div>
+    <script>
+      (function() {
+        $('#container').imgMap({
+          data : [{ // Xavier de Toledo
+            start_x : 235,
+            end_x : 310,
+            start_y : 240,
+            end_y : 280
+          }, { // Viaduto do Chá
+            start_x : 323,
+            end_x : 395,
+            start_y : 230,
+            end_y : 280
+          }]
+        });
+      })();
+    </script>
+  </body>
+</html>

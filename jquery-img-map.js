@@ -3,28 +3,29 @@
   $.fn.imgMap = function(element, options) {
 
     if (typeof options === 'undefined') {
-      options = element;
-      var self = element;
-    }
-    else {
+      var options = element || {};
       var self = $(this);
     }
-
-    var default = {
-      data : {},
-      borderWidth : '2px',
-      borderColor : 'red',
-      borderType : 'solid',
-      display : 'none'
-    };
-
-    $.extend(default, options);
-
-    if ($.type(options.data) === 'object') {
-      var data = [data];
+    else {
+      var self = element;
     }
 
-    self.css('position', 'relative');
+    var defaults = {
+      data : {},
+      borderWidth : '5px',
+      borderColor : 'red',
+      borderType : 'solid',
+      borderWidthOver : this.borderWidth,
+      borderColorOver : this.borderColor,
+      borderTypeOver : this.borderOver,
+      opacity : 0.3,
+      opacityOver : 0.6
+    };
+
+    options = $.extend(defaults, options);
+
+    var data = ($.type(options.data) === 'object') ? [options.data] : options.data;
+
     var el = document.createElement('div'),
     div = $(el).css({
       'z-index' : 1,
@@ -32,24 +33,40 @@
       left : '0px',
       position : 'absolute',
       display : options.display,
-      border : options.borderWidth + ' ' + options.borderType + ' ' + options.borderColor
+      border : options.borderWidth + ' ' + options.borderType + ' ' + options.borderColor,
+      opacity : options.opacity
     });
+
+    self.css('position', 'relative');
     
-    div.bind('mouseenter mouseleave', function() {
-      $(this).fadeToggle();
+    div.bind({
+      mouseover : function() {
+        $(this).css({
+          borderWidth : options.borderWidthOver,
+          opacity : options.opacityOver
+        });
+      },
+      mouseout: function() {
+        $(this).css({
+          borderWidth : options.borderWidth,
+          opacity : options.opacity
+        });
+      }
     });
 
     function px(int) {
       return int.toString() + 'px';
     }
 
-    $.map(data, function(obj) {
-      div.clone().css({
+    $.map(data, function(obj, i) {
+      var tag = div.clone(true).css({
         left : px(obj.start_x),
         top : px(obj.start_y),
-        width : px(obj.start_x - obj.end_x),
-        height : px(obj.start_y - obj.end_y)
+        width : px(obj.end_x - obj.start_x),
+        height : px(obj.end_y - obj.start_y)
       });
+
+      self.append(tag);
     });
 
   };
