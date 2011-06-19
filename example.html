@@ -5,7 +5,8 @@
     <title>jQuery Image Mapping example</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
     <style>
-      body, img, div{ margin:0px; padding:0px }
+      body, img, div{margin:0px;padding:0px}
+      div {width:612px; height:612px; margin:auto}
     </style>
     <script src="./jquery-img-map.js"></script>
   </head>
@@ -16,6 +17,8 @@
     <script>
       (function() {
         $('#container').imgMap({
+          borderWidth : '3px',
+          borderColor : 'yellow',
           data : [{ // Xavier de Toledo
             start_x : 235,
             end_x : 310,
@@ -23,8 +26,8 @@
             end_y : 280
           }, { // Viaduto do Chá
             start_x : 323,
-            end_x : 395,
-            start_y : 230,
+            end_x : 397,
+            start_y : 235,
             end_y : 280
           }]
         });
