@@ -1,5 +1,9 @@
 (function($) {
 
+  function px(int) {
+    return int.toString() + 'px';
+  }
+
   $.fn.imgMap = function(element, options, onLoad) {
 
     if (typeof options === 'undefined' || typeof options === 'boolean') {
@@ -62,12 +66,12 @@
       }
     });
 
-    function px(int) {
-      return int.toString() + 'px';
-    }
+    window.imgMap = {
+      _data : data // exposing the data for further reference
+    };
 
     $.map(data, function(obj, i) {
-      var tag = div.clone(true).css({
+      var tag = div.clone(true).addClass('tag_' + i).css({
         left : px(obj.start_x),
         top : px(obj.start_y),
         width : px(obj.end_x - obj.start_x),
