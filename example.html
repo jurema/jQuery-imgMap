@@ -17,20 +17,23 @@
     <script>
       $(document).ready(function() {
         $('#container').imgMap({
-          borderWidth : '3px',
+          borderWidth : '2px',
           borderColor : 'yellow',
-          data : [{ // Xavier de Toledo
+          opacity : 0.6,
+          opacityOver : 1.0,
+          onLoadDuration : 800,
+          data : [{       // Xavier de Toledo
             start_x : 235,
             end_x : 310,
             start_y : 240,
             end_y : 280
-          }, { // Viaduto do Chá
+          }, {            // Viaduto do Chá
             start_x : 323,
             end_x : 397,
             start_y : 235,
             end_y : 280
           }]
-        }, true); // true for showing the tags after the image is loaded
+        });
       });
     </script>
   </body>

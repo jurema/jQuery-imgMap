@@ -4,10 +4,9 @@
     return int.toString() + 'px';
   }
 
-  $.fn.imgMap = function(element, options, onLoad) {
+  $.fn.imgMap = function(element, options) {
 
-    if (typeof options === 'undefined' || typeof options === 'boolean') {
-      onLoad = options;
+    if (typeof options === 'undefined') {
       options = element || {};
       var self = $(this);
     }
@@ -17,6 +16,8 @@
 
     var defaults = {
       data : {},
+      onLoad : true, // show the tags after the image is fully loaded
+      onLoadDuration : 400,
       borderWidth : '5px',
       borderColor : 'red',
       borderType : 'solid',
@@ -29,14 +30,14 @@
 
     options = $.extend(defaults, options);
 
-    var data = ($.type(options.data) === 'object') ? [options.data] : options.data;
-
-    var el = document.createElement('div'),
+    var data = ($.type(options.data) === 'object') ? [options.data] : options.data,
+    el = document.createElement('div'),
+    onLoad = options.onLoad,
     div = $(el);
     
     if (onLoad) {
       self.find('img').load(function() {
-        self.find('._tags').fadeTo(400, options.opacity);
+        self.find('._tags').fadeTo(options.onLoadDuration, options.opacity);
       });
     }
 
