@@ -16,12 +16,12 @@
 
     var defaults = {
       data : {},
+      fx : true,
+      fxDuration : 400,
       onLoad : true, // show the tags after the image is fully loaded
-      onLoadDuration : 400,
       borderWidth : '5px',
       borderColor : 'red',
       borderType : 'solid',
-      borderWidthOver : this.borderWidth,
       borderColorOver : this.borderColor,
       borderTypeOver : this.borderOver,
       opacity : 0.3,
@@ -30,16 +30,18 @@
 
     options = $.extend(defaults, options);
 
+    if (!options.fx) {
+      options.fxDuration = 0;
+    }
+
     var data = ($.type(options.data) === 'object') ? [options.data] : options.data,
     el = document.createElement('div'),
     onLoad = options.onLoad,
     div = $(el);
     
-    if (onLoad) {
-      self.find('img').load(function() {
-        self.find('._tags').fadeTo(options.onLoadDuration, options.opacity);
-      });
-    }
+    self.find('img').load(function() {
+      self.find('._tags').fadeTo(options.fxDuration, options.opacity);
+    });
 
     div.prop('class', '_tags').css({
       'z-index' : 1,
@@ -54,16 +56,14 @@
     
     div.bind({
       mouseover : function() {
-        $(this).css({
-          borderWidth : options.borderWidthOver,
+        $(this).animate({
           opacity : options.opacityOver
-        });
+        }, options.fxDuration);
       },
       mouseout: function() {
-        $(this).css({
-          borderWidth : options.borderWidth,
+        $(this).animate({
           opacity : options.opacity
-        });
+        }, options.fxDuration);
       }
     });
 
