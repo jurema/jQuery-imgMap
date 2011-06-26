@@ -7,12 +7,17 @@
     <style>
       body, img, div{margin:0px;padding:0px}
       div {width:612px; height:612px; margin:auto}
+      #container p {float:left; margin-left: 190px}
+      #container p a {font-family: helvetica, arial; color: #333; text-decoration:none}
+      #container p a:hover {color: #999}
     </style>
     <script src="./jquery-img-map.js"></script>
   </head>
   <body>
     <div id="container">
       <img src="http://images.instagram.com/media/2011/06/17/9508b16b94c84083b9cac1fcc528c95c_7.jpg" alt="Teatro Municipal - SP" title="Teatro Municipal - SP" />
+      <br />
+      <p id="on"><a alt="on" title="on" href="#on"> o n </a></p> <p id="off"><a alt="off" title="off" href="#off"> o f f </a></p>
     </div>
     <script>
       $(document).ready(function() {
@@ -33,6 +38,16 @@
             start_y : 235,
             end_y : 280
           }]
+        });
+
+        $('#on').click(function(e) {
+          $.imgMap.on();
+          e.preventDefault();
+        });
+
+        $('#off').click(function(e) {
+          $.imgMap.off();
+          e.preventDefault();
         });
       });
     </script>
