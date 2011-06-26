@@ -6,12 +6,10 @@
 
   $.fn.imgMap = function(element, options) {
 
+    var self = element;
     if (typeof options === 'undefined') {
       options = element || {};
-      var self = $(this);
-    }
-    else {
-      var self = element;
+      self = $(this);
     }
 
     var defaults = {
@@ -67,10 +65,6 @@
       }
     });
 
-    window.imgMap = {
-      _data : data // exposing the data for further reference
-    };
-
     $.map(data, function(obj, i) {
       var tag = div.clone(true).addClass('tag_' + i).css({
         left : px(obj.start_x),
@@ -80,6 +74,30 @@
       });
 
       self.append(tag);
+    });
+
+    var opt_opacity;
+    $.extend({
+      imgMap : {
+        data : data, // exposing the data for further reference
+        on : function() {
+          if (opt_opacity) {
+            options.opacity = opt_opacity;
+          }
+          $('._tags').animate({
+            opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
+          }, options.fxDuration);
+        },
+        off : function() {
+          if (options.opacity !== 0.0) {
+            opt_opacity = options.opacity;
+            options.opacity = 0.0;
+          }
+          $('._tags').animate({
+            opacity : 0.0
+          }, options.fxDuration);
+        }
+      }
     });
   };
 
