@@ -79,7 +79,7 @@
     var opt_opacity;
     $.extend({
       imgMap : {
-        data : data, // exposing the data for further reference
+        settings : options, // exposing settings for further reference
         on : function() {
           if (opt_opacity) {
             options.opacity = opt_opacity;
