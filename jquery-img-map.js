@@ -53,13 +53,13 @@
     self.css('position', 'relative');
     
     div.bind({
-      mouseenter : function() {
+      mouseover : function() {
         $.imgMap.lastEventIndex = parseInt($(this).attr('class').split(" ")[1].replace("tag_", ""));
         $(this).animate({
           opacity : options.opacityOver
         }, options.fxDuration);
       },
-      mouseleave : function() {
+      mouseout : function() {
         $(this).animate({
           opacity : options.opacity
         }, options.fxDuration);
