@@ -54,6 +54,7 @@
     
     div.bind({
       mouseover : function() {
+        $.imgMap.lastEventIndex = parseInt($(this).attr('class').split(" ")[1].replace("tag_", ""));
         $(this).animate({
           opacity : options.opacityOver
         }, options.fxDuration);
@@ -79,6 +80,7 @@
     var opt_opacity;
     $.extend({
       imgMap : {
+        lastEventIndex : null,
         settings : options, // exposing settings for further reference
         on : function(index) {
           if (opt_opacity) {
