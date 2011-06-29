@@ -84,7 +84,7 @@
           if (opt_opacity) {
             options.opacity = opt_opacity;
           }
-          var tags = (index || index === 0) ? tags = $('.tag_' + index.toString()) : $('.tags');
+          var tags = (index || index === 0) ? tags = $('.tag_' + index.toString()) : $('._tags');
           tags.animate({
             opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
           }, options.fxDuration);
@@ -94,7 +94,7 @@
             opt_opacity = options.opacity;
             options.opacity = 0.0;
           }
-          var tags = (index || index === 0) ? $('.tag_' + index.toString()) : $('.tags');
+          var tags = (index || index === 0) ? $('.tag_' + index.toString()) : $('._tags');
           tags.animate({
             opacity : 0.0
           }, options.fxDuration);
