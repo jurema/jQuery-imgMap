@@ -80,20 +80,22 @@
     $.extend({
       imgMap : {
         settings : options, // exposing settings for further reference
-        on : function() {
+        on : function(index) {
           if (opt_opacity) {
             options.opacity = opt_opacity;
           }
-          $('._tags').animate({
+          var tags = (index || index === 0) ? tags = $('.tag_' + index.toString()) : $('.tags');
+          tags.animate({
             opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
           }, options.fxDuration);
         },
-        off : function() {
+        off : function(index) {
           if (options.opacity !== 0.0) {
             opt_opacity = options.opacity;
             options.opacity = 0.0;
           }
-          $('._tags').animate({
+          var tags = (index || index === 0) ? $('.tag_' + index.toString()) : $('.tags');
+          tags.animate({
             opacity : 0.0
           }, options.fxDuration);
         }
