@@ -1,7 +1,7 @@
 (function($) {
 
-  function px(int) {
-    return int.toString() + 'px';
+  function px(num) {
+    return num + 'px';
   }
 
   $.fn.imgMap = function(element, options) {
@@ -20,24 +20,18 @@
       borderWidth : '5px',
       borderColor : 'red',
       borderType : 'solid',
-      borderColorOver : this.borderColor,
-      borderTypeOver : this.borderOver,
       opacity : 0.3,
       opacityOver : 0.6
     };
 
     options = $.extend(defaults, options);
-
-    if (!options.fx) {
-      options.fxDuration = 0;
-    }
+    options.fxDuration = !options.fx ? 0 : options.fxDuration;
 
     var data = ($.type(options.data) === 'object') ? [options.data] : options.data,
     el = document.createElement('div'),
-    onLoad = options.onLoad,
     div = $(el);
     
-    self.find('img').load(function() {
+    self.css('position', 'relative').find('img').load(function() {
       self.find('._tags').fadeTo(options.fxDuration, options.opacity);
     });
 
@@ -47,12 +41,8 @@
       left : '0px',
       position : 'absolute',
       border : options.borderWidth + ' ' + options.borderType + ' ' + options.borderColor,
-      opacity : onLoad ? 0 : options.opacity
-    });
-
-    self.css('position', 'relative');
-    
-    div.bind({
+      opacity : options.onLoad ? 0 : options.opacity
+    }).bind({
       mouseover : function() {
         $.imgMap.lastEventIndex = parseInt($(this).attr('class').split(" ")[1].replace("tag_", ""));
         $(this).animate({
