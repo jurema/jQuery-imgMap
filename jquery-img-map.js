@@ -56,7 +56,7 @@
       }
     });
 
-    $.map(data, function(obj, i) {
+    $(data).each(function(i, obj) {
       var tag = div.clone(true).addClass('tag_' + i).css({
         left : px(obj.start_x),
         top : px(obj.start_y),
@@ -72,24 +72,26 @@
       imgMap : {
         lastEventIndex : null,
         settings : options, // exposing settings for further reference
-        on : function(index) {
-          if (opt_opacity) {
-            options.opacity = opt_opacity;
-          }
-          var tags = (index || index === 0) ? tags = $('.tag_' + String(index)) : $('._tags');
-          tags.animate({
-            opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
-          }, options.fxDuration);
+        on : function(index, time, duration) {
+          if (opt_opacity) options.opacity = opt_opacity;
+          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags');
+          setTimeout(function() {
+            tags.animate({
+              opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
+            }, duration || options.fxDuration);
+          }, time || 0);
         },
-        off : function(index) {
+        off : function(index, time, duration) {
           if (options.opacity !== 0.0) {
             opt_opacity = options.opacity;
             options.opacity = 0.0;
           }
           var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags');
-          tags.animate({
-            opacity : 0.0
-          }, options.fxDuration);
+          setTimeout(function() {
+            tags.animate({
+              opacity : 0.0
+            }, duration || options.fxDuration);
+          }, time || 0);
         }
       }
     });
