@@ -1,7 +1,7 @@
 (function($) {
 
   function px(num) {
-    return num + 'px';
+    return String(num) + 'px';
   }
 
   $.fn.imgMap = function(element, options) {
@@ -76,7 +76,7 @@
           if (opt_opacity) {
             options.opacity = opt_opacity;
           }
-          var tags = (index || index === 0) ? tags = $('.tag_' + index.toString()) : $('._tags');
+          var tags = (index || index === 0) ? tags = $('.tag_' + String(index)) : $('._tags');
           tags.animate({
             opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
           }, options.fxDuration);
@@ -86,7 +86,7 @@
             opt_opacity = options.opacity;
             options.opacity = 0.0;
           }
-          var tags = (index || index === 0) ? $('.tag_' + index.toString()) : $('._tags');
+          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags');
           tags.animate({
             opacity : 0.0
           }, options.fxDuration);
