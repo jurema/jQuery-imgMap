@@ -47,8 +47,8 @@
     var eachOpt = {};
 
     $(data).each(function(i, obj) {
-      var class = 'tag_' + i,
-      tag = div.clone(true).addClass(class).css({
+      var class_ = 'tag_' + i,
+      tag = div.clone(true).addClass(class_).css({
         left : px(obj.start_x),
         top : px(obj.start_y),
         width : px(obj.end_x - obj.start_x),
