@@ -46,7 +46,9 @@
         });
 
         $('#off').click(function(e) {
-          $.imgMap.off(null, 1000);
+          $.imgMap.off(null, 1000, 1000, function() {
+            console.log('callback fired');
+          });
           e.preventDefault();
         });
       });

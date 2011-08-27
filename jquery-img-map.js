@@ -72,25 +72,37 @@
       imgMap : {
         lastEventIndex : null,
         settings : options, // exposing settings for further reference
-        on : function(index, time, duration) {
+        on : function(index, time, duration, cb) {
           if (opt_opacity) options.opacity = opt_opacity;
-          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags');
+          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags'),
+          unlock = true;
           setTimeout(function() {
             tags.animate({
               opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
-            }, duration || options.fxDuration);
+            }, duration || options.fxDuration, function() {
+              if (unlock && cb) {
+                unlock = false;
+                return cb();
+              }
+            });
           }, time || 0);
         },
-        off : function(index, time, duration) {
+        off : function(index, time, duration, cb) {
           if (options.opacity !== 0.0) {
             opt_opacity = options.opacity;
             options.opacity = 0.0;
           }
-          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags');
+          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags'),
+          unlock = true;
           setTimeout(function() {
             tags.animate({
               opacity : 0.0
-            }, duration || options.fxDuration);
+            }, duration || options.fxDuration, function() {
+              if (unlock && cb) {
+                unlock = false;
+                return cb();
+              }
+            });
           }, time || 0);
         }
       }
