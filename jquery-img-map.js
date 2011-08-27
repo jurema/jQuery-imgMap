@@ -42,68 +42,156 @@
       position : 'absolute',
       border : options.borderWidth + ' ' + options.borderType + ' ' + options.borderColor,
       opacity : options.onLoad ? 0 : options.opacity
-    }).bind({
-      mouseover : function() {
-        $.imgMap.lastEventIndex = parseInt($(this).attr('class').split(" ")[1].replace("tag_", ""));
-        $(this).animate({
-          opacity : options.opacityOver
-        }, options.fxDuration);
-      },
-      mouseout : function() {
-        $(this).animate({
-          opacity : options.opacity
-        }, options.fxDuration);
-      }
     });
+    
+    var eachOpt = {};
 
     $(data).each(function(i, obj) {
-      var tag = div.clone(true).addClass('tag_' + i).css({
+      var class = 'tag_' + i,
+      tag = div.clone(true).addClass(class).css({
         left : px(obj.start_x),
         top : px(obj.start_y),
         width : px(obj.end_x - obj.start_x),
         height : px(obj.end_y - obj.start_y)
       });
 
+      eachOpt[String(i)] = {
+        timeOut : null,
+        opacityOver : options.opacityOver,
+        opacity : options.opacity,
+        opacityTmp : options.opacity,
+        status : options.opacity === 0.0 ? false : true,
+        running : false
+      };
+
       self.append(tag);
     });
 
-    var opt_opacity;
+    function setEvent (t, out, off) {
+      var index = t.prop('class').split(' ').pop().replace('tag_', '');
+      $.imgMap.lastEventIndex = parseInt(index);
+      t.animate({
+        opacity : out ? $.imgMap._eachSettings[index][off ? 'opacity' : 'opacityTmp'] : $.imgMap._eachSettings[index].opacityOver
+      }, options.fxDuration);
+    }
+
+    $('._tags').bind({
+      mouseover : function() {
+        setEvent($(this), null, true);
+      },
+      mouseout : function() {
+        setEvent($(this), true, true);
+      }
+    });
+
     $.extend({
       imgMap : {
         lastEventIndex : null,
         settings : options, // exposing settings for further reference
-        on : function(index, time, duration, cb) {
-          if (opt_opacity) options.opacity = opt_opacity;
-          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags'),
-          unlock = true;
-          setTimeout(function() {
+        _eachSettings : eachOpt,
+        on : function(index, time, duration, over, cb) {
+          if (index || index === 0) {
+            var tags = $('.tag_' + String(index));
+            options = $.imgMap._eachSettings[String(index)];
+            options.running = true;
+            options.status = true;
+          }
+          else {
+            var tags = $('._tags');
+          }
+
+          var unlock = true;
+          var t = setTimeout(function() {
             tags.animate({
-              opacity : options.opacity === 0.0 ? opt_opacity : options.opacity
+              opacity : over ? options.opacityOver : options.opacityTmp
             }, duration || options.fxDuration, function() {
               if (unlock && cb) {
                 unlock = false;
+                if (index || index === 0) options.running = false;
                 return cb();
               }
             });
           }, time || 0);
+
+          if (index || index === 0) {
+            options.timeOut = t;
+            $('.tag_'+index).unbind('mouseover mouseout').bind({
+              mouseover : function() {
+                setEvent($(this));
+              },
+              mouseout : function() {
+                setEvent($(this), true);
+              }
+            });
+          }
+          else {
+            var set = $.imgMap._eachSettings;
+            for (var i in set) {
+              set[String(i)].status = true;
+              set[String(i)].opacity = set[String(i)].opacityTmp;
+            }
+
+            $('._tags').unbind('mouseover mouseout').bind({
+              mouseover : function() {
+                setEvent($(this));
+              },
+              mouseout : function() {
+                setEvent($(this), true);
+              }
+            });
+          }
         },
         off : function(index, time, duration, cb) {
-          if (options.opacity !== 0.0) {
-            opt_opacity = options.opacity;
-            options.opacity = 0.0;
+          if (index || index === 0) {
+            var tags = $('.tag_' + String(index));
+            options = $.imgMap._eachSettings[String(index)];
+            options.running = true;
+            options.status = false;
           }
-          var tags = (index || index === 0) ? $('.tag_' + String(index)) : $('._tags'),
-          unlock = true;
-          setTimeout(function() {
+          else {
+            var tags = $('._tags');
+          }
+
+          var unlock = true;
+          var t = setTimeout(function() {
             tags.animate({
               opacity : 0.0
             }, duration || options.fxDuration, function() {
               if (unlock && cb) {
                 unlock = false;
+                if (index || index === 0) options.running = false;
                 return cb();
               }
             });
           }, time || 0);
+
+          if (index || index === 0) {
+            options.timeOut = t;
+            $('.tag_'+index).unbind('mouseover mouseout').bind({
+              mouseover : function() {
+                setEvent($(this), null, true);
+              },
+              mouseout : function() {
+                setEvent($(this), true, true);
+              }
+            });
+          }
+          else {
+            var set = $.imgMap._eachSettings;
+            for (var i in set) {
+              set[String(i)].status = false;
+              set[String(i)].opacity = 0.0;
+            }
+
+            $('._tags').unbind('mouseover mouseout').bind({
+              mouseover : function() {
+                setEvent($(this), null, true);
+              },
+              mouseout : function() {
+                setEvent($(this), true, true);
+              }
+            });
+          }
         }
       }
     });
